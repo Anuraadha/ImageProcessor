@@ -28,24 +28,24 @@ namespace ImageProcessor.Controllers
         }
 
         [HttpPost("upload")]
-        public IActionResult FetchResizedImage(IFormFile file, int width , int height)
+        public async Task<IActionResult> FetchResizedImage([Bind("File,@type,Width,Height")] FileModel fileData)
         {
-            _ImageProcessorService.Resize(file, width , height);
-            return Ok("hello");
+            var data = await _ImageProcessorService.Resize(fileData.File, fileData.Width, fileData.Height);
+            return View("upload", data);
         }
 
         [HttpPost("upload/{type}")]
-        public async Task<IActionResult> FetchResizedImageByApplication(IFormFile file, ApplicationTypeEnum type)
+        public async Task<ImageModel> FetchResizedImageByApplication(IFormFile file, ApplicationTypeEnum type)
         {
-            var path  = await _ImageProcessorService.ResizeByApplication(file,type);
-            return Ok(path);
+            var data  = await _ImageProcessorService.ResizeByApplication(file,type);
+            return data;
         }
 
         [HttpGet("image/{id}")]
-        public async Task<IActionResult> GetImageData(int id)
+        public async Task<ImageModel> GetImageData(int id)
         {
                 var data =  await _ImageProcessorService.FetchImageByID(id);
-                return Ok(data);
+                return data;
         }
 
         public IActionResult Privacy()

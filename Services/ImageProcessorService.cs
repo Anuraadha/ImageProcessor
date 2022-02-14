@@ -6,15 +6,15 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
-using Image = ImageProcessor.Models.Image;
+using ImageModel = ImageProcessor.Models.ImageModel;
 
 namespace ImageProcessor.Services
 {
 
     public interface IImageProcessorService
     {
-        Task<string> Resize(IFormFile file, int width, int height);
-        Task<Image> FetchImageByID(int id);
+        Task<ImageModel> Resize(IFormFile file, int width, int height);
+        Task<ImageModel> FetchImageByID(int id);
     }
     public class ImageProcessorService : IImageProcessorService
     {
@@ -26,8 +26,9 @@ namespace ImageProcessor.Services
             _env = env;
         }
         //Modifying image using customize width and height
-        public Task<string> Resize(IFormFile file, int width = 0 , int height = 0)
+        public async Task<ImageModel> Resize(IFormFile file, int width = 0 , int height = 0)
         {
+            var imageModel = new ImageModel();
             var currentPath = file.FileName;
 
             var webRoot = _env.ContentRootPath;
@@ -101,41 +102,49 @@ namespace ImageProcessor.Services
                         conn.Close();
                     }
 
-                        resizedImage.Save(newFilePath, ImageFormat.Png);
+                    imageModel.Name = $"{Path.GetFileNameWithoutExtension(file.FileName)}_{ width}x{ height}.png)";
+                    imageModel.TargetWidth = width;
+                    imageModel.TargetHeight = height;
+                    imageModel.TargetPath = newFilePath;
+                    resizedImage.Save(newFilePath, ImageFormat.Png);
                     
                 }
+
+              
             }
-            return Task.FromResult("newFilePath");
+
+           
+            return imageModel;
 
         }
         //Modifying image using the predefined application type
-        public async Task<string> ResizeByApplication(IFormFile file, ApplicationTypeEnum type)
+        public async Task<ImageModel> ResizeByApplication(IFormFile file, ApplicationTypeEnum type)
         {
-            var path = "";
+            var imageModel = new ImageModel();
 
             switch (type)
             {
                 case ApplicationTypeEnum.Thumbnail:
-                    path = await Resize(file, 128, 128);
+                    imageModel = await Resize(file, 128, 128);
                     break;
                 case ApplicationTypeEnum.Small:
-                    path = await Resize(file, 512, 512);
+                    imageModel = await Resize(file, 512, 512);
                     break;
                 case ApplicationTypeEnum.Medium:
-                    path = await Resize(file, 1024, 1024);
+                    imageModel = await Resize(file, 1024, 1024);
                     break;
                 case ApplicationTypeEnum.Large:
-                    path = await Resize(file, 2048, 2048);
+                    imageModel = await Resize(file, 2048, 2048);
                     break;
             }
-            return path;
+            return imageModel;
         }
 
         //Retrieving Image Data
-        public async Task<Image> FetchImageByID(int id)
+        public async Task<ImageModel> FetchImageByID(int id)
         {
 
-            Image imageData = new Image();
+            ImageModel imageData = new ImageModel();
 
             using (SqlConnection conn = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
             {

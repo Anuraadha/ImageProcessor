@@ -8,92 +8,68 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+   
 </div>
 
 
 
+<h4>Enhance Image</h4>
+<br/>
 <form enctype="multipart/form-data" method="post" action="/upload">
-    <input type="file" name="file" />
-    <input type="submit" />
+    <input type="file" name="File" />
+    <br/>
+    <br/>
+    <button class="btn btn-primary" id="upload-image" type="submit">Modify Image</button> 
 
-    <button class="btn btn-primary" id="upload-image">Modify Image</button> 
+    <hr/>
+    </form>
 
+
+    <h4>Upload and Enhance Image by application type</h4>
+<br/>
+    <form enctype="multipart/form-data" method="post" action="/upload">
+    <input type="file" name="File" />
+    <br/>
+    <div class="col-md-16 form-group"  id = "app-type">  
+    @Html.RadioButtonFor(model => model.type, "Thumbnail") 
+    Thumbnail  
+
+    @Html.RadioButtonFor(model => model.type, "Small") 
+    Small  
+
+    @Html.RadioButtonFor(model => model.type, "Medium") 
+    Medium  
+
+    @Html.RadioButtonFor(model => model.type, "Large") 
+    Large  
+
+    </div> 
     <br/>
 
-    <div class="col-md-10" id = "app-type">  
-    Thumbnail  
-    @Html.RadioButtonFor(model => model.type, "Thumbnail") 
-    Small  
-    @Html.RadioButtonFor(model => model.type, "Small") 
-    Medium  
-    @Html.RadioButtonFor(model => model.type, "Medium") 
-    Large  
-    @Html.RadioButtonFor(model => model.type, "Large") 
-</div> 
+        <button class="btn btn-primary" id="upload-image-type" type="submit">Modify Image (Type)</button>
 
-        <button class="btn btn-primary" id="upload-image-type">ModifyImage(Type)</button>
+        <hr/>
+
+        </form>
+
+        <h4>Upload and Enhance Image by customize size</h4>
+<br/>
+        <form enctype="multipart/form-data" method="post" action="/upload">
+    <input type="file" name="File" />
+    <br/>
+        <div class="form-group" class="col-md-16">
+                <label asp-for="Width" class="control-label"></label>
+                <input asp-for="Width" class="form-control"type="number" />
+                <span asp-validation-for="Width" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group" >
+                <label asp-for="Height" class="control-label"></label>
+                <input asp-for="Height" class="form-control" type="number" class="col-md-16" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+            <br/>
         
-        <button class="btn btn-primary" id="upload-image-size">Modify Image (Size)</button>
-
-    <p id="success-msg">One Image Successfully Modified</p>
-
-    <img src= '@Url.Action("GetUserImageFile", "Manage")'/>
+        <button class="btn btn-primary" id="upload-image-size" type="submit">Modify Image (Size)</button>
 </form>
-
-
-@section scripts{
-    <script>
-        const list = document.querySelector('ul.results');
-        const msg = document.getElementById('success-msg');
-        const app-type = document.getElementById('app-type');
-        const modifyImage = document.getElementById('upload-image');
-        const modifyImageByType = document.getElementById('upload-image-type');
-        const ModifyImageBySize = document.getElementById('upload-image-size');
- 
-        modifyImage.addEventListener('click', () => {
-            modifyImage();
-        });
-
-        modifyImageByType.addEventListener('click', () => {
-            modifyImageByType();
-        });
-
-        ModifyImageBySize.addEventListener('click', () => {
-            modifyImageBySize();
-        });
- 
-        const modifyImage = () => {
-            list.innerHTML = '';
-            fetch("/upload")
-            .then(response => response.json())
-            .then(cars => {
-
-                let para = document.createElement('p');
-                para.innerText= `Image has been modified successfully!`
-                msg.innerText= `Image has been modified successfully!`
-
-               
-            });
-        }
-
-          const modifyImageByType = (type) => {
-            list.innerHTML = '';
-            fetch("/upload/type={type}")
-            .then(response => response.json())
-            .then(cars => {
-                
-            });
-        }
-
-        const modifyImageBySize= (width, height) => {
-            list.innerHTML = '';
-            fetch("/upload/width={width}/height={height}")
-            .then(response => response.json())
-            .then(cars => {
-                
-            });
-        }
-
-    </script>
-}
