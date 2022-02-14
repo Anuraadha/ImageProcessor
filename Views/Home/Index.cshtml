@@ -1,0 +1,99 @@
+﻿
+@model ImageProcessor.Models.FileModel
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+
+<form enctype="multipart/form-data" method="post" action="/upload">
+    <input type="file" name="file" />
+    <input type="submit" />
+
+    <button class="btn btn-primary" id="upload-image">Modify Image</button> 
+
+    <br/>
+
+    <div class="col-md-10" id = "app-type">  
+    Thumbnail  
+    @Html.RadioButtonFor(model => model.type, "Thumbnail") 
+    Small  
+    @Html.RadioButtonFor(model => model.type, "Small") 
+    Medium  
+    @Html.RadioButtonFor(model => model.type, "Medium") 
+    Large  
+    @Html.RadioButtonFor(model => model.type, "Large") 
+</div> 
+
+        <button class="btn btn-primary" id="upload-image-type">ModifyImage(Type)</button>
+        
+        <button class="btn btn-primary" id="upload-image-size">Modify Image (Size)</button>
+
+    <p id="success-msg">One Image Successfully Modified</p>
+
+    <img src= '@Url.Action("GetUserImageFile", "Manage")'/>
+</form>
+
+
+@section scripts{
+    <script>
+        const list = document.querySelector('ul.results');
+        const msg = document.getElementById('success-msg');
+        const app-type = document.getElementById('app-type');
+        const modifyImage = document.getElementById('upload-image');
+        const modifyImageByType = document.getElementById('upload-image-type');
+        const ModifyImageBySize = document.getElementById('upload-image-size');
+ 
+        modifyImage.addEventListener('click', () => {
+            modifyImage();
+        });
+
+        modifyImageByType.addEventListener('click', () => {
+            modifyImageByType();
+        });
+
+        ModifyImageBySize.addEventListener('click', () => {
+            modifyImageBySize();
+        });
+ 
+        const modifyImage = () => {
+            list.innerHTML = '';
+            fetch("/upload")
+            .then(response => response.json())
+            .then(cars => {
+
+                let para = document.createElement('p');
+                para.innerText= `Image has been modified successfully!`
+                msg.innerText= `Image has been modified successfully!`
+
+               
+            });
+        }
+
+          const modifyImageByType = (type) => {
+            list.innerHTML = '';
+            fetch("/upload/type={type}")
+            .then(response => response.json())
+            .then(cars => {
+                
+            });
+        }
+
+        const modifyImageBySize= (width, height) => {
+            list.innerHTML = '';
+            fetch("/upload/width={width}/height={height}")
+            .then(response => response.json())
+            .then(cars => {
+                
+            });
+        }
+
+    </script>
+}
