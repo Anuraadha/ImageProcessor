@@ -26,7 +26,7 @@ namespace ImageProcessor.Services
             _env = env;
         }
         //Modifying image using customize width and height
-        public async Task<ImageModel> Resize(IFormFile file, int width = 0 , int height = 0)
+        public async Task<ImageModel> Resize(IFormFile file, int width = 0, int height = 0)
         {
             var imageModel = new ImageModel();
             var currentPath = file.FileName;
@@ -37,7 +37,7 @@ namespace ImageProcessor.Services
 
             var pathToFile = System.IO.Path.Combine(webRoot, currentPath);
 
-            var originalWidth = 0 ;
+            var originalWidth = 0;
             var originalHeight = 0;
 
             using (var originalImage = System.Drawing.Image.FromStream(file.OpenReadStream()))
@@ -59,14 +59,14 @@ namespace ImageProcessor.Services
                     graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
 
-                    float brightness = 1.0f; 
-                    float contrast = 2.0f; 
+                    float brightness = 1.0f;
+                    float contrast = 2.0f;
 
                     float adjustedBrightness = brightness - 1.0f;
                     float[][] ptsArray ={
-                    new float[] {contrast, 0, 0, 0, 0}, 
+                    new float[] {contrast, 0, 0, 0, 0},
                     new float[] {0, contrast, 0, 0, 0},
-                    new float[] {0, 0, contrast, 0, 0}, 
+                    new float[] {0, 0, contrast, 0, 0},
                     new float[] {0, 0, 0, 1.0f, 0},
                     new float[] {adjustedBrightness, adjustedBrightness, adjustedBrightness, 0, 1}};
 
@@ -83,7 +83,7 @@ namespace ImageProcessor.Services
 
                     imagestream.Dispose();
                     using (SqlConnection conn = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
-                    { 
+                    {
                         conn.Open();
                         SqlCommand cmd = new SqlCommand("insert into image_master(Name,FileType,FileTypeExtension,FileSize,OriginalWidth," +
                             " OriginalHeight,TargetWidth,TargetHeight,SourcePath,TargetPath,UploadedOn)values" +
@@ -107,16 +107,11 @@ namespace ImageProcessor.Services
                     imageModel.TargetHeight = height;
                     imageModel.TargetPath = newFilePath;
                     resizedImage.Save(newFilePath, ImageFormat.Png);
-                    
                 }
-
-              
             }
-
-           
             return imageModel;
-
         }
+
         //Modifying image using the predefined application type
         public async Task<ImageModel> ResizeByApplication(IFormFile file, ApplicationTypeEnum type)
         {
@@ -143,7 +138,6 @@ namespace ImageProcessor.Services
         //Retrieving Image Data
         public async Task<ImageModel> FetchImageByID(int id)
         {
-
             ImageModel imageData = new ImageModel();
 
             using (SqlConnection conn = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
@@ -157,7 +151,7 @@ namespace ImageProcessor.Services
                 {
                     while (sqlDataReader.Read())
                     {
-                        imageData.Name  = sqlDataReader.GetString(1);
+                        imageData.Name = sqlDataReader.GetString(1);
                         imageData.TargetWidth = sqlDataReader.GetInt32(7);
                         imageData.TargetHeight = sqlDataReader.GetInt32(8);
                         imageData.TargetPath = sqlDataReader.GetString(10);

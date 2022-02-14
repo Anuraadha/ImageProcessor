@@ -1,5 +1,4 @@
-﻿
-@model ImageProcessor.Models.FileModel
+﻿@model ImageProcessor.Models.FileModel
 
 
 @{
@@ -8,68 +7,68 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-   
+
 </div>
 
 
 
 <h4>Enhance Image</h4>
-<br/>
+<br />
 <form enctype="multipart/form-data" method="post" action="/upload">
     <input type="file" name="File" />
-    <br/>
-    <br/>
-    <button class="btn btn-primary" id="upload-image" type="submit">Modify Image</button> 
+    <br />
+    <br />
+    <button class="btn btn-primary" id="upload-image" type="submit">Modify Image</button>
 
-    <hr/>
-    </form>
+    <hr />
+</form>
 
 
-    <h4>Upload and Enhance Image by application type</h4>
-<br/>
-    <form enctype="multipart/form-data" method="post" action="/upload">
+<h4>Upload and Enhance Image by application type</h4>
+<br />
+<form enctype="multipart/form-data" method="post" action="/upload">
     <input type="file" name="File" />
-    <br/>
-    <div class="col-md-16 form-group"  id = "app-type">  
-    @Html.RadioButtonFor(model => model.type, "Thumbnail") 
-    Thumbnail  
+    <br />
+    <div class="col-md-16 form-group" id="app-type">
+        @Html.RadioButtonFor(model => model.type, "Thumbnail")
+        Thumbnail
 
-    @Html.RadioButtonFor(model => model.type, "Small") 
-    Small  
+        @Html.RadioButtonFor(model => model.type, "Small")
+        Small
 
-    @Html.RadioButtonFor(model => model.type, "Medium") 
-    Medium  
+        @Html.RadioButtonFor(model => model.type, "Medium")
+        Medium
 
-    @Html.RadioButtonFor(model => model.type, "Large") 
-    Large  
+        @Html.RadioButtonFor(model => model.type, "Large")
+        Large
 
-    </div> 
-    <br/>
+    </div>
+    <br />
 
-        <button class="btn btn-primary" id="upload-image-type" type="submit">Modify Image (Type)</button>
+    <button class="btn btn-primary" id="upload-image-type" type="submit">Modify Image (Type)</button>
 
-        <hr/>
+    <hr />
 
-        </form>
+</form>
 
-        <h4>Upload and Enhance Image by customize size</h4>
-<br/>
-        <form enctype="multipart/form-data" method="post" action="/upload">
+<h4>Upload and Enhance Image by customize size</h4>
+<br />
+<form enctype="multipart/form-data" method="post" action="/upload">
     <input type="file" name="File" />
-    <br/>
-        <div class="form-group" class="col-md-16">
-                <label asp-for="Width" class="control-label"></label>
-                <input asp-for="Width" class="form-control"type="number" />
-                <span asp-validation-for="Width" class="text-danger"></span>
-            </div>
+    <br />
+    <div class="form-group" class="col-md-16">
+        <label asp-for="Width" class="control-label"></label>
+        <input asp-for="Width" class="form-control" type="number" />
+        <span asp-validation-for="Width" class="text-danger"></span>
+    </div>
 
 
-            <div class="form-group" >
-                <label asp-for="Height" class="control-label"></label>
-                <input asp-for="Height" class="form-control" type="number" class="col-md-16" />
-                <span asp-validation-for="Height" class="text-danger"></span>
-            </div>
-            <br/>
-        
-        <button class="btn btn-primary" id="upload-image-size" type="submit">Modify Image (Size)</button>
+    <div class="form-group">
+        <label asp-for="Height" class="control-label"></label>
+        <input asp-for="Height" class="form-control" type="number" class="col-md-16" />
+        <span asp-validation-for="Height" class="text-danger"></span>
+    </div>
+    <br />
+
+    <button class="btn btn-primary" id="upload-image-size" type="submit">Modify Image (Size)</button>
 </form>
