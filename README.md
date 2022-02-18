@@ -17,7 +17,6 @@
 
 
 ## Features
-List the ready features here:
 - Apis and DB is dockerized and ready to used as a container image
 - Apis are writeen in .NET Core and documented using swagger endpoint for better readability and documentation.
 - It has endpoint for uploading and retrieving photos and their metadata
@@ -46,7 +45,6 @@ Room for improvement:
 
 
 ## Acknowledgements
-Give credit here.
 - This project was inspired by IIASA NODES - Full Stack Challenge.
 
 
